@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+.bg-grid-white {
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+:root {
+  --wpforms-field-border-radius: 3px;
+  --wpforms-field-background-color: #ffffff;
+  /* ... rest of your CSS variables ... */
+}
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: rgba(16, 19, 27, 1);
+  color: #ffffff;
+}
+
+
+.title-font {
+  font-family: 'Syncopate', sans-serif;
+}
+
+/* Animated background */
+.animated-bg {
+  background: linear-gradient(-45deg, #066aab, #121212, #1a1a1a, #066aab);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Magnetic button effect */
+.magnetic-button {
+  @apply relative inline-block cursor-pointer;
+  transform-style: preserve-3d;
+  transform: perspective(500px);
+}
+
+/* Text reveal animation */
+.reveal-text {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+.nav-link {
+  @apply relative cursor-pointer hover:text-primary transition-colors duration-300;
+}
+
+.nav-link::after {
+  content: '';
+  @apply absolute bottom-0 left-0 w-0 h-[2px] bg-primary transition-all duration-300;
+}
+
+.nav-link:hover::after {
+  @apply w-full;
+} 
+/* Add to your existing globals.css */
+.custom-cursor {
+  width: 20px;
+  height: 20px;
+  background: var(--wpforms-button-background-color);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  mix-blend-mode: difference;
+  z-index: 9999;
+  transition: transform 0.2s ease;
+}
+
+.custom-cursor-expanded {
+  transform: scale(3);
+}
+
+.loader {
+  @apply fixed inset-0 bg-dark z-50 flex items-center justify-center;
+}
+
+.loader-content {
+  @apply text-4xl text-primary font-bold;
+}
