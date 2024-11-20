@@ -1,88 +1,165 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Link } from 'react-scroll';
+import React, { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Facebook, Instagram, MessageCircle, Phone } from 'lucide-react'
 
-const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const navLinks = [
-    "About us", "Media", "Residents", "Advertisement", 
-    "Special Projects", "Production", "Services", "Contacts"
-  ];
+const navLinks = [
+  "ABOUT US",
+  "MEDIA",
+  "RESIDENTS",
+  "ADVERTISEMENT",
+  "SPECIAL PROJECTS",
+  "PRODUCTION",
+  "CONTACTS"
+]
+
+export default function WillstarNavbar() {
+  const [isOpen, setIsOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 50)
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const scrollToSection = (sectionId) => {
+    const section = document.getElementById(sectionId)
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' })
+      setIsOpen(false) // Close mobile menu after clicking
+    }
+  }
+
+  const menuVariants = {
+    closed: { opacity: 0, y: '-100%' },
+    open: { opacity: 1, y: 0 }
+  }
+
+  const linkVariants = {
+    closed: { opacity: 0, x: -50 },
+    open: i => ({
+      opacity: 1,
+      x: 0,
+      transition: { delay: i * 0.1 }
+    })
+  }
 
   return (
-    <motion.nav 
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      className="fixed w-full top-0 z-50 bg-dark/80 backdrop-blur-sm"
-    >
-      <div className="container mx-auto px-4 py-6 flex justify-between items-center">
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          className="text-2xl font-bold text-light"
-        >
-          Portfolio
-        </motion.div>
-        
-        <div className="md:hidden">
-          <button onClick={() => setIsOpen(!isOpen)} className="text-light">
-            Menu
-          </button>
-        </div>
-
-        <div className="hidden md:flex space-x-8">
-          {navLinks.map((link) => (
-            <Link
-              key={link}
-              to={link.toLowerCase().replace(' ', '-')}
-              smooth={true}
-              duration={500}
-              className="relative text-light transition duration-300 hover:text-primary"
-              onClick={() => window.scrollTo(0, 0)}
+    <>
+      <motion.nav
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ type: 'spring', stiffness: 50 }}
+        className={`fixed w-full z-50 transition-colors duration-300 ${
+          isScrolled ? 'bg-black/50 backdrop-blur-sm' : 'bg-transparent'
+        }`}
+      >
+        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+          <a href="/" className="relative z-50">
+            <motion.h1 
+              className="text-2xl font-bold text-white italic tracking-wider"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              {link}
-              <span className="absolute left-0 right-0 bottom-0 h-0.5 bg-gradient-to-r from-pink-500 to-orange-500 transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
-            </Link>
-          ))}
-        </div>
-      </div>
+              G star
+            </motion.h1>
+          </a>
 
-      {isOpen && (
-        <motion.div
-          initial={{ x: '-100%' }}
-          animate={{ x: 0 }}
-          exit={{ x: '-100%' }}
-          transition={{ type: 'spring', stiffness: 300 }}
-          className="fixed top-0 left-0 w-full h-full bg-dark/90 flex flex-col items-center justify-center"
-        >
-          <button onClick={() => setIsOpen(false)} className="absolute top-4 right-4 text-light">
-            Close
-          </button>
-          {navLinks.map((link) => (
-            <motion.div
-              key={link}
-              initial={{ x: '-100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '-100%' }}
-              transition={{ type: 'spring', stiffness: 300, delay: 0.1 * navLinks.indexOf(link) }}
-              className="text-2xl text-light mb-4 transition duration-300 hover:text-primary"
-            >
-              <Link
-                to={link.toLowerCase().replace(' ', '-')}
-                smooth={true}
-                duration={500}
-                onClick={() => {
-                  window.scrollTo(0, 0);
-                  setIsOpen(false);
-                }}
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center space-x-8">
+            {navLinks.map((link) => (
+              <motion.a
+                key={link}
+                onClick={() => scrollToSection(link.toLowerCase().replace(' ', '-'))}
+                className="text-white/90 hover:text-white text-sm tracking-wider transition-colors cursor-pointer"
+                whileHover={{ y: -2 }}
+                whileTap={{ y: 0 }}
               >
                 {link}
-              </Link>
-            </motion.div>
-          ))}
-        </motion.div>
-      )}
-    </motion.nav>
-  );
-};
+              </motion.a>
+            ))}
+            <div className="flex items-center space-x-4 ml-8">
+              <SocialIcon Icon={Phone} />
+              <SocialIcon Icon={MessageCircle} />
+              <SocialIcon Icon={Instagram} />
+              <SocialIcon Icon={Facebook} />
+            </div>
+          </div>
 
-export default Navbar; 
+          {/* Menu Toggle */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="relative z-50 lg:hidden"
+          >
+            <motion.div 
+              className="grid grid-cols-2 gap-1"
+              whileHover={{ rotate: 180 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              {[...Array(4)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="w-2 h-2 bg-white rounded-full"
+                  initial={false}
+                  animate={isOpen ? { scale: [1, 1.5, 1] } : { scale: 1 }}
+                  transition={{ delay: i * 0.1 }}
+                />
+              ))}
+            </motion.div>
+          </button>
+        </div>
+      </motion.nav>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            className="fixed inset-0 bg-black z-40 lg:hidden"
+          >
+            <div className="container mx-auto px-6 py-24 h-full flex flex-col">
+              <motion.h2 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-7xl font-bold text-white mb-16"
+              >
+                menu
+              </motion.h2>
+              
+              <div className="flex flex-col space-y-6">
+                {navLinks.map((link) => (
+                  <motion.a
+                    key={link}
+                    onClick={() => scrollToSection(link.toLowerCase().replace(' ', '-'))}
+                    className="text-3xl text-white/90 hover:text-white transition-colors cursor-pointer"
+                  >
+                    {link}
+                  </motion.a>
+                ))}
+              </div>
+
+              <div className="mt-auto flex space-x-6">
+                <SocialIcon Icon={Phone} size={24} />
+                <SocialIcon Icon={MessageCircle} size={24} />
+                <SocialIcon Icon={Instagram} size={24} />
+                <SocialIcon Icon={Facebook} size={24} />
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  )
+}
+
+function SocialIcon({ Icon, size = 20 }) {
+  return (
+    <motion.a
+      href="#"
+      className="text-white/80 hover:text-white transition-colors"
+      whileHover={{ scale: 1.2 }}
+      whileTap={{ scale: 0.9 }}
+    >
+      <Icon size={size} />
+    </motion.a>
+  )
+}

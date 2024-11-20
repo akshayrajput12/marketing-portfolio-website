@@ -46,47 +46,47 @@ export default function Component() {
       stats: "25+ Markets",
       client: "Beluga",
       year: "2023",
-      image: project3
+      image: project6
     },
     {
-      title: "Beluga Experience",
+      title: "Bantley",
       description: "Premium vodka brand activation with artistic installations",
       icon: <Trophy className="w-12 h-12" />,
       stats: "25+ Markets",
-      client: "Beluga",
+      client: "Bantley",
       year: "2023",
-      image: project3
+      image: project4
     },
     {
-      title: "Beluga Experience",
+      title: "Room",
       description: "Premium vodka brand activation with artistic installations",
       icon: <Trophy className="w-12 h-12" />,
       stats: "25+ Markets",
-      client: "Beluga",
-      year: "2023",
+      client: "Room",
+      year: "2022",
       image: project3
     },
     {
-      title: "Beluga Experience",
+      title: "Davidoff",
       description: "Premium vodka brand activation with artistic installations",
       icon: <Trophy className="w-12 h-12" />,
       stats: "25+ Markets",
-      client: "Beluga",
+      client: "Davidoff",
       year: "2023",
       image: project3
     }
   ]
 
   return (
-    <section ref={containerRef} className="relative min-h-screen py-20 bg-black text-white overflow-hidden">
-      <motion.div style={{ y }} className="container mx-auto px-4">
+    <section ref={containerRef} id="special-projects" className="relative min-h-screen py-20 bg-black text-white overflow-hidden">
+         <motion.div style={{ y }} className="container mx-auto px-4">
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="relative mb-32"
+          className="relative mb-12 md:mb-32"
         >
           <motion.h2
-            className="text-8xl md:text-9xl lg:text-[12rem] font-bold tracking-tighter leading-none text-center"
+            className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl xl:text-[12rem] font-bold tracking-tighter leading-none text-center"
           >
             <motion.span
               initial={{ x: -100, opacity: 0 }}
@@ -100,7 +100,7 @@ export default function Component() {
               initial={{ x: 100, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="inline-block ml-4"
+              className="inline-block ml-2 md:ml-4"
               style={{ WebkitTextStroke: '1px white', color: 'transparent' }}
             >
               PROJECT

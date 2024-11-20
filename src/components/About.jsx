@@ -1,212 +1,244 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import React, { useRef, useEffect } from 'react'
+import { motion, useScroll, useTransform, useSpring, useInView, useAnimation } from 'framer-motion'
+import { Rocket, Users, Zap, CircleDot, CheckCircle, MoveRight } from 'lucide-react'
 
-const AboutPage = () => {
-  const { scrollYProgress } = useScroll();
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
-  const [isMounted, setIsMounted] = useState(false);
-  const parallaxRef = useRef(null);
+export default function AboutUs() {
+  const sectionRef = useRef(null)
+  const aboutUsRef = useRef(null)
+  const isInView = useInView(sectionRef, { once: false, amount: 0.1 })
+  const controls = useAnimation()
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"]
+  })
+
+  const y = useTransform(scrollYProgress, [0, 1], [0, 200])
+  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.5, 0])
+
+  const scaleSpring = useSpring(1, { stiffness: 100, damping: 30 })
 
   useEffect(() => {
-    setIsMounted(true);
-  }, []);
+    if (isInView) {
+      scaleSpring.set(1.1)
+      controls.start("visible")
+    } else {
+      scaleSpring.set(1)
+      controls.start("hidden")
+    }
+  }, [isInView, scaleSpring, controls])
 
   const advantages = [
-    { icon: '🚀', title: "Easy start", description: "Perfect for newcomers. We provide all the tools needed to get started." },
-    { icon: '⭐', title: "High Quality", description: "Top media ratings ensure your content stands out." },
-    { icon: '📢', title: "Bys Troe", description: "Effective promotion strategies tailored to your needs." },
-    { icon: '👥', title: "Resourceful", description: "Expertise in content creation and distribution." },
-  ];
+    { icon: Rocket, title: 'Easy start', subtitle: 'newcomers to the media field' },
+    { icon: Users, title: 'high', subtitle: 'Media Rating' },
+    { icon: Zap, title: 'Bys Troe', subtitle: 'Promotion and development' },
+    { icon: CircleDot, title: 'Powerful', subtitle: 'PR campaign' },
+    { icon: CheckCircle, title: 'Found', subtitle: 'content creation resources' },
+    { icon: MoveRight, title: 'You move', subtitle: 'on large advertisers' }
+  ]
 
-  const services = ['INFLUENCE MARKETING', 'PR', 'PRODUCING', 'PRODUCTION'];
-
-  const springConfig = { stiffness: 100, damping: 30, restDelta: 0.001 };
-  const scaleSpring = useSpring(1, springConfig);
+  const letters = " ".split("")
 
   return (
-    <section className="relative min-h-screen bg-[#10131B] overflow-hidden py-20 font-sans">
-      {isMounted && (
+    <div className="relative">
+      {/* Font Import */}
+      <style>
+        {`
+          @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
+        `}
+      </style>
+
+      {/* Rainbow Effect */}
+      <div className="fixed top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 via-red-500 to-yellow-500 z-50" />
+      
+      {/* Combined Hero and Advantages Section with Background */}
+      <section 
+        ref={sectionRef}
+        id="about-us"
+        className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-cover bg-center bg-fixed"
+        style={{
+          backgroundImage: "url('https://willstar.ru/wp-content/themes/willstar/assets/images/aboutus-section/color-madness.webp')"
+        }}
+      >
+        <div className="absolute inset-0 bg-black bg-opacity-70" />
+        
+        {/* Vertical "ABOUT US" Text */}
         <motion.div 
-          ref={parallaxRef}
-          className="absolute inset-0 opacity-30"
-          style={{ y }}
+          ref={aboutUsRef}
+          className="fixed left-8 top-1/2 -translate-y-1/2 rotate-90 origin-left text-8xl font-bold tracking-widest text-white pointer-events-none"
+          style={{ opacity: isInView ? opacity : 0 }}
         >
-          <img
-            src="https://willstar.ru/wp-content/themes/willstar/assets/images/aboutus-section/color-madness.webp"
-            alt="Background"
-            className="w-full h-full object-cover"
-          />
+          {letters.map((letter, index) => (
+            <motion.span
+              key={index}
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="inline-block hover:text-purple-400 transition-colors duration-300 cursor-default"
+              style={{ fontFamily: 'Roboto, sans-serif', fontStyle: 'normal' }} // Using Roboto font
+            >
+              {letter}
+            </motion.span>
+          ))}
         </motion.div>
-      )}
 
-      <div className="absolute inset-0 bg-grid-white/[0.02] bg-[length:50px_50px]" />
-
-      <div className="relative z-10 container mx-auto px-4">
+        {/* Hero Content */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-20"
+          className="relative z-10 text-center text-white mb-20"
         >
           <motion.h1 
-            className="text-7xl sm:text-[120px] font-bold text-white leading-none tracking-tighter mb-4"
-            whileHover={{ scale: 1.1, textShadow: "0 0 20px rgba(255, 255, 255, 0.8)" }}
-            transition={{ type: "spring", ...springConfig }}
+            className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600"
+            style={{ scale: scaleSpring }}
           >
-            ABOUT US
+            G Star
           </motion.h1>
           <motion.p 
-            className="text-xl sm:text-2xl text-gray-400 max-w-3xl mx-auto"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
+            className="text-xl max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
           >
-            We provide high-quality turnkey content with seamless shooting and editing.
+            We close the need for shooting and editing the highest-quality turnkey content
           </motion.p>
         </motion.div>
 
-        <div className="relative mb-32">
-          <motion.div
-            className="absolute -top-40 left-0 w-full text-[100px] sm:text-[200px] font-bold text-white/5 pointer-events-none select-none overflow-hidden whitespace-nowrap"
-            initial={{ x: "-100%" }}
-            animate={{ x: "100%" }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        {/* Advantages Content */}
+        <motion.div
+          initial="hidden"
+          animate={controls}
+          variants={{
+            visible: { transition: { staggerChildren: 0.1 } },
+            hidden: {}
+          }}
+          className="relative z-10 w-full"
+        >
+          <motion.h2 
+            variants={{
+              visible: { opacity: 1, y: 0 },
+              hidden: { opacity: 0, y: 50 }
+            }}
+            transition={{ duration: 0.8 }}
+            className="text-6xl md:text-8xl font-bold text-center mb-20 tracking-wider text-white"
+            style={{
+              WebkitTextStroke: '1px white',
+              WebkitTextFillColor: 'transparent'
+            }}
           >
-            advantages advantages advantages
-          </motion.div>
-          
-          <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-8">
-            {advantages.map((advantage, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="relative group"
-                whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(255, 255, 255, 0.5)" }}
-              >
-                <motion.div 
-                  className="absolute inset-0 bg-white/5 rounded-xl"
-                  whileHover={{ scale: 1.1, opacity: 0.7 }}
-                  transition={{ ...springConfig }}
-                />
-                <div className="relative bg-white/10 border border-white/20 p-4 rounded-xl hover:border-white/30 transition-colors">
-                  <motion.div 
-                    className="text-4xl mb-2"
-                    whileHover={{ scale: 1.2, rotate: 5, textShadow: "0 0 10px rgba(255, 255, 255, 0.8)" }}
-                    transition={{ type: "spring", ...springConfig }}
+            ADVANTAGES
+          </motion.h2>
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-12">
+              {advantages.map((item, index) => (
+                <motion.div
+                  key={index}
+                  variants={{
+                    visible: { opacity: 1, y: 0 },
+                    hidden: { opacity: 0, y: 20 }
+                  }}
+                  transition={{ duration: 0.5 }}
+                  whileHover={{ scale: 1.05 }}
+                  className="flex flex-col items-center text-center group"
+                >
+                  <motion.div
+                    whileHover={{ rotate: 360, scale: 1.2 }}
+                    transition={{ duration: 0.5 }}
                   >
-                    {advantage.icon}
+                    <item.icon className="w-16 h-16 text-purple-400 mb-4" />
                   </motion.div>
-                  <motion.h3 
-                    className="text-xl sm:text-2xl font-bold text-white mb-1"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2, duration: 0.5 }}
-                  >
-                    {advantage.title}
-                  </motion.h3>
-                  <motion.p 
-                    className="text-md sm:text-lg text-gray-400"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3, duration: 0.5 }}
-                  >
-                    {advantage.description}
-                  </motion.p>
-                </div>
+                  <h3 className="text-xl font-semibold mb-2 text-white">{item.title}</h3>
+                  <p className="text-sm text-gray-300">{item.subtitle}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* Content Section */}
+      <section className="py-20 bg-black">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="max-w-4xl mx-auto text-lg leading-relaxed mb-20 text-white"
+          >
+            <p>
+              Our team has gained tremendous experience in all types of advertising for more than 20 years on the market 
+              and has carried out more than a thousand successful advertising campaigns. Our possibilities in marketing 
+              are endless - we work in the 360 format and cover all the needs of our clients, because in our arsenal there are: 
+              Outdoor advertising, Digital advertising, Offline events, Influence marketing, PR and our own video production, 
+              organizing turnkey filming in the shortest possible time.
+            </p>
+          </motion.div>
+
+          <div className="flex justify-between items-center flex-wrap gap-8">
+            {['INFLUENCE MARKETING', 'PR', 'PRODUCING', 'PRODUCTION'].map((service, index) => (
+              <motion.div
+                key={service}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0, color: '#a855f7', fontStyle: 'italic' }}
+                transition={{ delay: index * 0.2 }}
+                whileHover={{ scale: 1.05, color: '#a855f7' }}
+                className="text-2xl font-bold tracking-wider text-white cursor-pointer relative group"
+              >
+                {service}
+                <motion.div
+                  className="absolute -inset-0.5 bg-purple-600 rounded-lg opacity-0 group-hover:opacity-20 transition-opacity duration-300"
+                  layoutId="serviceBg"
+                />
               </motion.div>
             ))}
           </div>
         </div>
+      </section>
 
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="grid lg:grid-cols-[1fr,2fr] gap-12 items-center"
-        >
-          <div className="space-y-6">
-            <motion.h2 
-              className="text-4xl sm:text-5xl font-bold text-white"
-              whileHover={{ scale: 1.05, textShadow: "0 0 20px rgba(255, 255, 255, 0.8)" }}
-              transition={{ type: "spring", ...springConfig }}
-            >
-              Our Services
-            </motion.h2>
+      {/* Bottom Section */}
+      <section className="py-20 bg-black">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
             <motion.div
-              className="flex flex-wrap gap-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              className="space-y-4"
             >
-              {services.map((service, index) => (
+              <h3 className="text-2xl font-bold text-white">
+                We create the most successful advertising campaigns and find the most profitable advertising contracts
+              </h3>
+              <p className="text-gray-400">
+                We develop and bring bloggers and artists to new levels of popularity in our production center
+              </p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8 }}
+              className="relative"
+            >
+              <motion.div 
+                className="relative h-[400px] overflow-hidden rounded-lg"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.3 }}
+              >
+                <img
+                  src="https://willstar.ru/wp-content/themes/willstar/assets/images/aboutus-section/color-madness.webp"
+                  alt="Artistic visual"
+                  className="w-full h-full object-cover"
+                />
                 <motion.div
-                  key={index}
-                  className="px-4 sm:px-6 py-2 bg-white/10 rounded-full text-white border border-white/20 cursor-pointer text-sm sm:text-base"
-                  whileHover={{ scale: 1.1, boxShadow: "0 0 15px rgba(255,255,255,0.5)" }}
-                  transition={{ type: "spring", ...springConfig }}
-                >
-                  {service}
-                </motion.div>
-              ))}
+                  className="absolute inset-0 bg-gradient-to-t from-purple-600 to-transparent opacity-0"
+                  whileHover={{ opacity: 0.6 }}
+                  transition={{ duration: 0.3 }}
+                />
+              </motion.div>
             </motion.div>
           </div>
-          
-          <motion.div 
-            className="relative h-[300px] sm:h-[400px] rounded-2xl overflow-hidden group"
-            whileHover={{ scale: 1.02 }}
-            transition={{ type: "spring", ...springConfig }}
-          >
-            <img
-              src="/placeholder.svg"
-              alt="Production Services"
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-            <div className="absolute bottom-0 left-0 p-8">
-              <motion.h3 
-                className="text-2xl sm:text-3xl font-bold text-white mb-2"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.2 }}
-              >
-                AkShay
-              </motion.h3>
-              <motion.p 
-                className="text-lg sm:text-xl text-gray-300"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.3 }}
-              >
-                production
-              </motion.p>
-            </div>
-          </motion.div>
-        </motion.div>
-      </div>
-
-      {[...Array(20)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute w-2 h-2 bg-white rounded-full"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-          }}
-          animate={{
-            y: [0, -30, 0],
-            opacity: [0, 1, 0],
-          }}
-          transition={{
-            duration: Math.random() * 3 + 2,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-      ))}
-    </section>
-  );
-};
-
-export default AboutPage;
+        </div>
+      </section>
+    </div>
+  )
+}

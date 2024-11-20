@@ -235,7 +235,7 @@ export default function Component() {
   }
 
   return (
-    <section className="min-h-screen bg-black text-white py-10 px-4 overflow-hidden">
+    <section id="residents" className="min-h-screen bg-black text-white py-10 px-4 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <motion.h1
           className="text-6xl sm:text-8xl md:text-9xl lg:text-[12rem] font-bold tracking-tighter mb-10 sm:mb-20 text-center"

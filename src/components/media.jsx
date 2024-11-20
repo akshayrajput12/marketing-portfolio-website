@@ -8,7 +8,6 @@ import case2 from '../assets/images/cases/3-jpg.webp'
 import case3 from '../assets/images/cases/4-jpg.webp'
 import case4 from '../assets/images/cases/5-jpg.webp'
 
-
 const artists = [
   { id: 1, name: "KIRILL KOLESNIKOV", title: "Comedy Club" },
   { id: 2, name: "ANNA PETROVA", title: "Pop Singer" },
@@ -16,12 +15,7 @@ const artists = [
   { id: 4, name: "AKSHAY SINGH", title: "TV" },
 ]
 
-const images = [
-  case1,
-  case2,
-  case3,
-  case4
-]
+const images = [case1, case2, case3, case4]
 
 export default function Component() {
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -36,7 +30,7 @@ export default function Component() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-hidden">
+    <div section id="media" className="min-h-screen bg-black text-white overflow-hidden">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -48,9 +42,9 @@ export default function Component() {
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.8 }}
-          className="mb-[-2rem]"
+          className="mb-1 md:mb-2"
         >
-          <h1 className="text-7xl md:text-9xl font-bold tracking-tighter  overflow-hidden">
+          <h1 className="text-5xl sm:text-7xl md:text-9xl font-bold tracking-tighter overflow-hidden">
             <motion.span
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
@@ -63,15 +57,15 @@ export default function Component() {
         </motion.div>
 
         {/* Content grid */}
-        <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div className="grid md:grid-cols-2 gap-1 md:gap-2 items-center">
           {/* Left column with text content */}
           <motion.div
             initial={{ x: -50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.8 }}
-            className="space-y-8"
+            className="space-y-6 md:space-y-8"
           >
-            <p className="text-lg md:text-xl text-gray-300 leading-relaxed">
+            <p className="text-base md:text-lg text-gray-300 leading-relaxed">
               Extensive experience in the Media allows us to correctly analyze market and create an individual plan for the
               implementation of the artist. Team professionals draws up a content plan, promotion strategy, calculates PR
               campaigns and reputation development. For our clients, we organize red carpet walks, Appearing on TV,
@@ -86,16 +80,14 @@ export default function Component() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.5 }}
-                className="pt-8 border-t border-gray-800"
+                className="pt-6 md:pt-8 border-t border-gray-800"
               >
-                <motion.div
-                  className="space-y-2"
-                >
+                <motion.div className="space-y-2">
                   <div className="flex items-center space-x-4">
-                    <span className="text-4xl font-bold">#{artists[currentIndex].id}</span>
+                    <span className="text-3xl md:text-4xl font-bold">#{artists[currentIndex].id}</span>
                     <div>
                       <motion.h2 
-                        className="text-2xl font-bold"
+                        className="text-xl md:text-2xl font-bold"
                         onHoverStart={() => setHoveredText(artists[currentIndex].name.split(' ')[0])}
                         onHoverEnd={() => setHoveredText('')}
                         animate={{
@@ -105,7 +97,7 @@ export default function Component() {
                         {artists[currentIndex].name.split(' ')[0]}
                       </motion.h2>
                       <motion.h2 
-                        className="text-2xl font-bold"
+                        className="text-xl md:text-2xl font-bold"
                         onHoverStart={() => setHoveredText(artists[currentIndex].name.split(' ')[1])}
                         onHoverEnd={() => setHoveredText('')}
                         animate={{
@@ -117,7 +109,7 @@ export default function Component() {
                     </div>
                   </div>
                   <motion.p 
-                    className="text-xl text-gray-400"
+                    className="text-lg md:text-xl text-gray-400"
                     onHoverStart={() => setHoveredText(artists[currentIndex].title)}
                     onHoverEnd={() => setHoveredText('')}
                     animate={{
@@ -145,12 +137,12 @@ export default function Component() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 1.2 }}
                 transition={{ duration: 0.5 }}
-                className="relative overflow-hidden rounded-lg"
+                className="relative overflow-hidden rounded-lg aspect-w-16 aspect-h-9"
               >
                 <motion.img
                   src={images[currentIndex]}
                   alt={`Event featuring ${artists[currentIndex].name}`}
-                  className="w-full h-auto object-cover"
+                  className="w-full h-full object-cover max-w-[80%] max-h-[80%]"
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.3 }}
                 />
@@ -165,20 +157,20 @@ export default function Component() {
           <motion.button
             whileHover={{ scale: 1.1, backgroundColor: "rgba(255,255,255,0.2)" }}
             whileTap={{ scale: 0.9 }}
-            className="p-4 bg-white/10 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-white/50"
+            className="p-2 md:p-4 bg-white/10 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-white/50"
             onClick={prevSlide}
             aria-label="Previous slide"
           >
-            <ChevronLeft className="w-12 h-12" />
+            <ChevronLeft className="w-6 h-6 md:w-8 md:h-8" />
           </motion.button>
           <motion.button
             whileHover={{ scale: 1.1, backgroundColor: "rgba(255,255,255,0.2)" }}
             whileTap={{ scale: 0.9 }}
-            className="p-4 bg-white/10 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-white/50"
+            className="p-2 md:p-4 bg-white/10 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-white/50"
             onClick={nextSlide}
             aria-label="Next slide"
           >
-            <ChevronRight className="w-12 h-12" />
+            <ChevronRight className="w-6 h-6 md:w-8 md:h-8" />
           </motion.button>
         </div>
       </motion.div>

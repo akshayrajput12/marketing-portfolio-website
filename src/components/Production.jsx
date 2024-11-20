@@ -141,7 +141,7 @@ export default function Component() {
   }
 
   return (
-    <section ref={containerRef} className="relative min-h-screen py-20 bg-black text-white overflow-hidden">
+    <section ref={containerRef} id="production" className="relative min-h-screen py-20 bg-black text-white overflow-hidden">
       <motion.div className="max-w-7xl mx-auto px-4">
         <div className="mb-16 relative pl-24" ref={ref}>
           <motion.div

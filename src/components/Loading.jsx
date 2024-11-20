@@ -1,4 +1,7 @@
 import { motion } from 'framer-motion';
+import { quantum } from 'ldrs';
+
+quantum.register();
 
 const Loading = () => {
   return (
@@ -6,20 +9,13 @@ const Loading = () => {
       className="loader"
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
+      animate={{ rotate: 360 }}
     >
-      <motion.div 
-        className="loader-content"
-        animate={{ 
-          scale: [1, 1.2, 1],
-          rotate: [0, 360]
-        }}
-        transition={{ 
-          duration: 2,
-          repeat: Infinity
-        }}
-      >
-        LOADING
-      </motion.div>
+      <l-quantum 
+        size="300"
+        speed="1.75" 
+        color="white" 
+      ></l-quantum>
     </motion.div>
   );
 };
